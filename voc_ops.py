@@ -108,7 +108,7 @@ class voc_formatter():
 
         # -. check dict dimension
         for tv, d in zip(['train', 'val'], [self.dict_train, self.dict_val]):
-            k = d.keys()[0]  # check the 1st one
+            k = list(d.keys())[0]  # check the 1st one
             if type(k) is not str:
                 raise TypeError("[{} dict] Unexpected type: {}".format(tv, type(k)))
             bbs = d[k]

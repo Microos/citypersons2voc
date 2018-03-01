@@ -39,7 +39,7 @@ vf = voc_ops.voc_formatter(cityperson_image_root_dir,
                             train_dict,
                             val_dict,
                             lbl_map,
-                            file_exist_handling='PROCED')
+                           file_exist_handling='PROCED')
 
 
 vf.run()
