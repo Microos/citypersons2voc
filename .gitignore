@@ -2,5 +2,5 @@
 *.txt
 *~
 .idea/
-./data
+data
 *!
