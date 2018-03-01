@@ -143,7 +143,7 @@ class voc_formatter():
 
             # copy img
             dest_img = self.img_dir / k
-            shutil.copyfile(img_file, dest_img)
+            shutil.copyfile(str(img_file), str(dest_img))
 
             # write xml
             self.__write_xml(k, w, h, v)
