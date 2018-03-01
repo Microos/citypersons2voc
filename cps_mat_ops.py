@@ -41,7 +41,7 @@ def parse_mat(file_path):
 if __name__ == '__main__':
     # test
 
-    anno_dir = Path('/Users/microos/PycharmProjects/CityPersons/citypersons2voc/data/annotations')
+    anno_dir = Path('./data/annotations')
     train_mat = anno_dir / 'anno_train.mat'
     val_mat = anno_dir / 'anno_val.mat'
 

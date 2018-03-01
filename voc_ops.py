@@ -172,6 +172,4 @@ class voc_formatter():
         print('# val  : {}'.format(len(self.val_set)))
 
 
-if __name__ == '__main__':
 
-    vf = voc_formatter(0, Path('./test_devkit'), 0, 'PROCED')
