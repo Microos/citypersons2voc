@@ -33,10 +33,13 @@ val_mat = citypersons_annotaions_dir / 'anno_val.mat'
 train_dict = parse_mat(train_mat)
 val_dict = parse_mat(val_mat)
 
+# convert
 vf = voc_ops.voc_formatter(cityperson_image_root_dir,
                             devkit_output_dir,
                             train_dict,
                             val_dict,
                             lbl_map,
-                            file_exist_handling='ABORT'
-                           )
+                            file_exist_handling='ABORT')
+
+
+vf.run()
