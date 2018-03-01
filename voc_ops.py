@@ -107,11 +107,11 @@ class voc_formatter():
             raise FileNotFoundError('{} Not Found'.format(self.img_val_dir))
 
         # -. check dict dimension
-        for tv, dict in zip(['train', 'val'], [self.dict_train, self.dict_val]):
-            k = dict.keys()[0]  # check the 1st one
+        for tv, d in zip(['train', 'val'], [self.dict_train, self.dict_val]):
+            k = d.keys()[0]  # check the 1st one
             if type(k) is not str:
                 raise TypeError("[{} dict] Unexpected type: {}".format(tv, type(k)))
-            bbs = dict[k]
+            bbs = d[k]
             dim = bbs.shape[1]
             if dim != 5:
                 raise ValueError("[{} dict] Unexpected dimension: ({} vs 5)".format(tv, dim))
