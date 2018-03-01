@@ -11,6 +11,7 @@ def parse_mat(file_path):
     :param file_path: where the .mat is.
     :return: a dict, key: imagename, value: an array of n* <lbl, x1 y1 x2 y2>
     '''
+    file_path = str(file_path)
     k = 'anno_train_aligned' if 'train' in str(file_path) else 'anno_val_aligned'
     print('Loading mat file from {}'.format(file_path))
     mat = loadmat(file_path)[k][0] # shape = (500,)
