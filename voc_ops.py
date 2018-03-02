@@ -133,6 +133,7 @@ class voc_formatter():
         3. write xml
         4. append name_set
         '''
+        print('Processing {} ...'.format('train' if 'train' in str(src_img_dir) else 'val'))
         for k, v in name_bbs_dict.items():
             city_name = k.split('_')[0]
             img_file = src_img_dir / city_name / k
@@ -143,6 +144,7 @@ class voc_formatter():
 
             # copy img
             dest_img = self.img_dir / k
+            k = k.replace('.png', '.jpg') # dirty-and-quick, w/o actually tamper image data
             shutil.copyfile(str(img_file), str(dest_img))
 
             # write xml
