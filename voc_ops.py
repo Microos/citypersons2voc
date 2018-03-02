@@ -47,7 +47,7 @@ tail = '</annotation>'
 
 class voc_formatter():
     def __init__(self, img_src_dir: Path, des_dir: Path, name_bbs_dict_train, name_bbs_dict_val, lbl_map,
-                 file_exist_handling='PROCED'):
+                 dir_exist_handling='PROCED'):
         self.img_src_dir = img_src_dir  # expected to have train/test/val dir and sub-dirs with city names
         self.des_dir = des_dir  # devkit dir
         self.dict_train = name_bbs_dict_train
@@ -57,15 +57,15 @@ class voc_formatter():
             value: 
                 n* < lbl x1 y1 w h >
         '''
-        self.file_exist_handling = file_exist_handling
+        self.dir_exist_handling = dir_exist_handling
         self.lbl_map = lbl_map
-        if self.file_exist_handling == 'ABORT':
+        if self.dir_exist_handling == 'ABORT':
             self.rm = False
-        elif self.file_exist_handling == 'PROCED':
+        elif self.dir_exist_handling == 'PROCED':
             self.rm = True
         else:
             raise ValueError('''
-            allowed option for "file_exist_handling":
+            allowed option for "dir_exist_handling":
             ABORT: abort the program
             PROCED: rm existing file
         ''')
@@ -87,7 +87,7 @@ class voc_formatter():
                 print('remove dir at {}'.format(self.des_dir.absolute()))
                 os.system('rm -rf {}'.format(self.des_dir))
             else:
-                raise FileExistsError("set file_exist_handling='PROCED'" +
+                raise FileExistsError("set dir_exist_handling='PROCED'" +
                                       "to remove the dir at {}".format(self.des_dir.absolute()))
         data_dir = self.des_dir / 'data'
         self.anno_dir = data_dir / 'Annotations'
@@ -170,8 +170,8 @@ class voc_formatter():
         self.__write_set_file(self.val_set, 'val')
 
         print('Done:')
-        print('# train: {}'.format(len(self.train_set)))
-        print('# val  : {}'.format(len(self.val_set)))
+        print('  train: {}'.format(len(self.train_set)))
+        print('  val  : {}'.format(len(self.val_set)))
 
 
 

@@ -12,8 +12,8 @@ citypersons_annotaions_dir = Path('./data/annotations')
 # expected to contain: train,val,test(optional) sub-dirs
 cityperson_image_root_dir = Path('./data/leftImg8bit')
 
-# customized devkit output dir:
-devkit_output_dir = Path('./data/citypersons_devkit')
+# your customized devkit output dir:
+devkit_output_dir = Path('./citypersons_devkit_out')
 
 # index-to-string map based on:
 # https://bitbucket.org/shanshanzhang/citypersons/src/c13bbdfa986222c7dc9b4b84cc8a24f58d7ab72b/annotations/?at=default
@@ -37,11 +37,11 @@ val_dict = parse_mat(val_mat)
 
 # convert
 vf = voc_ops.voc_formatter(cityperson_image_root_dir,
-                            devkit_output_dir,
-                            train_dict,
-                            val_dict,
-                            lbl_map,
-                           file_exist_handling='ABORT')
+                           devkit_output_dir,
+                           train_dict,
+                           val_dict,
+                           lbl_map,
+                           dir_exist_handling='ABORT')
 
 
 vf.run()

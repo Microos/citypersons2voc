@@ -2,6 +2,7 @@
 *.txt
 *~
 .idea/
-data
+data/
+citypersons_devkit_out/
 *!
-__
+__pycache__

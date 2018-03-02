@@ -12,8 +12,10 @@ def parse_mat(file_path):
     :return: a dict, key: imagename, value: an array of n* <lbl, x1 y1 x2 y2>
     '''
     file_path = str(file_path)
-    k = 'anno_train_aligned' if 'train' in str(file_path) else 'anno_val_aligned'
-    print('Loading mat file from {}'.format(file_path))
+    tv = 'train' if 'train' in str(file_path) else 'val'
+    k = 'anno_{}_aligned'.format(tv)
+    noins_counter = 0
+    print('Parsing mat file from {}'.format(file_path))
     mat = loadmat(file_path)[k][0] # shape = (500,)
     name_bbs_dict = {}
     for img_idx in range(len(mat)):
@@ -24,6 +26,10 @@ def parse_mat(file_path):
         bbs = img_anno[2] # n x 10 matrix
         # 10-D: [class_label, x1, y1, w, h, instance_id, x1_vis, y1_vis, w_vis, h_vis]
 
+        # no-instance filter
+        if bbs.shape[0] == 0:
+            noins_counter += 1
+            continue
 
         bbs = bbs[:, [0,1,2,3,4]]
         # lbl x1 y1 w h
@@ -32,6 +38,7 @@ def parse_mat(file_path):
         bbs[:, 4] += bbs[:,2]
         name_bbs_dict[img_name_with_ext] = bbs
 
+    print(' --> {} images contains no instances filtered'.format(noins_counter))
     return name_bbs_dict
 
 
