@@ -143,8 +143,8 @@ class voc_formatter():
                 w, h = img.size
 
             # copy img
+            k = k.replace('.png', '.jpg')  # dirty-and-quick, w/o actually tamper image data
             dest_img = self.img_dir / k
-            k = k.replace('.png', '.jpg') # dirty-and-quick, w/o actually tamper image data
             shutil.copyfile(str(img_file), str(dest_img))
 
             # write xml
