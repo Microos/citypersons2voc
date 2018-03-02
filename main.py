@@ -24,7 +24,9 @@ lbl_map = {
     3: 'sit',
     4: 'other',
     5: 'group'
-}
+}  # ignore,ped,rider,sit,other,group
+
+
 
 # parse *.mat
 train_mat = citypersons_annotaions_dir / 'anno_train.mat'
