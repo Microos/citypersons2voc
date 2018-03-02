@@ -153,7 +153,7 @@ class voc_formatter():
 
     def __write_set_file(self, name_set, tv):
         set_file = self.set_dir / tv
-        with open(str(set_file), 'w') as f:
+        with open('{}.txt'.format(set_file), 'w') as f:
             f.write('\n'.join(name_set))
 
     def run(self):
