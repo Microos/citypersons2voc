@@ -3,6 +3,8 @@ Citypersons .mat annotation operations
 """
 from scipy.io import loadmat
 from pathlib import Path
+import numpy as np
+
 
 def parse_mat(file_path):
     '''
@@ -16,14 +18,14 @@ def parse_mat(file_path):
     k = 'anno_{}_aligned'.format(tv)
     noins_counter = 0
     print('Parsing mat file from {}'.format(file_path))
-    mat = loadmat(file_path)[k][0] # shape = (500,)
+    mat = loadmat(file_path, mat_dtype=True)[k][0]  # uint8 overflow fix
     name_bbs_dict = {}
     for img_idx in range(len(mat)):
         # each image
-        img_anno = mat[img_idx][0,0]
+        img_anno = mat[img_idx][0, 0]
         city_name = img_anno[0][0]
         img_name_with_ext = img_anno[1][0]
-        bbs = img_anno[2] # n x 10 matrix
+        bbs = img_anno[2]  # n x 10 matrix
         # 10-D: [class_label, x1, y1, w, h, instance_id, x1_vis, y1_vis, w_vis, h_vis]
 
         # no-instance filter
@@ -31,18 +33,17 @@ def parse_mat(file_path):
             noins_counter += 1
             continue
 
-        bbs = bbs[:, [0,1,2,3,4]]
+        bbs = bbs[:, [0, 1, 2, 3, 4]]
         # lbl x1 y1 w h
         # 0   1  2  3 4
-        bbs[:, 3] += bbs[:,1]
-        bbs[:, 4] += bbs[:,2]
+
+        bbs[:, 3] += bbs[:, 1]
+        bbs[:, 4] += bbs[:, 2]
+
         name_bbs_dict[img_name_with_ext] = bbs
 
     print(' --> {} images contains no instances filtered'.format(noins_counter))
     return name_bbs_dict
-
-
-
 
 
 if __name__ == '__main__':
