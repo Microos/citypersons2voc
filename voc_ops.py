@@ -44,9 +44,8 @@ object_tmpl = \
 tail = '</annotation>'
 
 
-
 class voc_formatter():
-    def __init__(self, img_src_dir: Path, des_dir: Path, name_bbs_dict_train, name_bbs_dict_val, lbl_map,
+    def __init__(self, img_src_dir: Path, des_dir: Path, name_bbs_dict_train, name_bbs_dict_val, lbl_map, copy_imgs = True,
                  dir_exist_handling='PROCED'):
         self.img_src_dir = img_src_dir  # expected to have train/test/val dir and sub-dirs with city names
         self.des_dir = des_dir  # devkit dir
@@ -69,7 +68,7 @@ class voc_formatter():
             ABORT: abort the program
             PROCED: rm existing file
         ''')
-
+        self.copy_imgs = copy_imgs
         self.__prepare()
         self.train_set = []
         self.val_set = []
@@ -129,7 +128,7 @@ class voc_formatter():
     def __run(self, src_img_dir: Path, name_bbs_dict: dict, name_set):
         '''
         1. get img w, h
-        2. copy img
+        2. copy img (if True)
         3. write xml
         4. append name_set
         '''
@@ -143,9 +142,10 @@ class voc_formatter():
                 w, h = img.size
 
             # copy img
-            k_png = k.replace('.png', '.jpg')  # dirty-and-quick, w/o actually tamper image data
-            dest_img = self.img_dir / k_png
-            shutil.copyfile(str(img_file), str(dest_img))
+            if self.copy_imgs:
+                k_png = k.replace('.png', '.jpg')  # dirty-and-quick, w/o actually tamper image data
+                dest_img = self.img_dir / k_png
+                shutil.copyfile(str(img_file), str(dest_img))
 
             # write xml
             self.__write_xml(k, w, h, v)
@@ -170,8 +170,12 @@ class voc_formatter():
         self.__write_set_file(self.val_set, 'val')
 
         print('Done:')
-        print('  train: {}'.format(len(self.train_set)))
-        print('  val  : {}'.format(len(self.val_set)))
+        print('  train: {} images'.format(len(self.train_set)))
+        print('  val  : {} images'.format(len(self.val_set)))
 
-
-
+        if not self.copy_imgs:
+            info = '# Note #: Folder JPEGImages is empty. Because no images were copied.'
+            bar = ''.join(['-' for _ in range(len(info))])
+            print(bar)
+            print(info)
+            print(bar)

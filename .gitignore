@@ -3,6 +3,6 @@
 *~
 .idea/
 data/
-citypersons_devkit_out/
+*devkit*
 *!
 __pycache__
