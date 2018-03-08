@@ -95,7 +95,7 @@ class voc_formatter():
 
         self.anno_dir.mkdir(parents=True)
         self.set_dir.mkdir(parents=True)
-        self.img_dir.mkdir(parents=True)
+        if self.copy_imgs: self.img_dir.mkdir(parents=True)
 
         # -. check src dir existence
         self.img_train_dir = self.img_src_dir / 'train'

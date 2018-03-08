@@ -6,12 +6,13 @@ from pathlib import Path
 import numpy as np
 
 
-def parse_mat(file_path, lbl_map):
+def parse_mat(file_path, lbl_map, filter = False):
     '''
     Read .mat file from file_path, return a dict
-    
+
     :param file_path: where the .mat is.
             lbl_map: if None key detected in the map, this class will be dropped
+            filter: if False, will not drop any images or boxes
     :return: a dict, key: imagename, value: an array of n* <lbl, x1 y1 x2 y2>
     '''
     file_path = str(file_path)
@@ -21,7 +22,7 @@ def parse_mat(file_path, lbl_map):
     noins_img_counter = 0
     droped_bbox_counter = 0
     bbox_counter = 0
-    print('Parsing mat file from {}'.format(file_path))
+    print('Parsing mat file from {} (filter {})'.format(file_path, 'enabled' if filter else 'disabled'))
     mat = loadmat(file_path, mat_dtype=True)[k][0]  # uint8 overflow fix
     name_bbs_dict = {}
     for img_idx in range(len(mat)):
@@ -37,13 +38,14 @@ def parse_mat(file_path, lbl_map):
         # 0   1  2  3 4
 
         # drop class
-        lbls = bbs[:, 0]
-        keep_indces = np.in1d(lbls, drop_class_id, invert=True)
-        bbs = bbs[keep_indces, :]
-        droped_bbox_counter += len(np.where(keep_indces == False)[0])
+        if filter:
+            lbls = bbs[:, 0]
+            keep_indces = np.in1d(lbls, drop_class_id, invert=True)
+            bbs = bbs[keep_indces, :]
+            droped_bbox_counter += len(np.where(keep_indces == False)[0])
 
         # no-instance filter
-        if bbs.shape[0] == 0:
+        if filter and bbs.shape[0] == 0:
             noins_img_counter += 1
             continue
 
