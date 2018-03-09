@@ -49,8 +49,9 @@ def parse_mat(file_path, lbl_map, filter = False):
             noins_img_counter += 1
             continue
 
-        bbs[:, 3] += bbs[:, 1]
-        bbs[:, 4] += bbs[:, 2]
+        # convert xywh to xyxy
+        bbs[:, 3] += bbs[:, 1] -1 # adding -1
+        bbs[:, 4] += bbs[:, 2] -1 # adding -1
 
         name_bbs_dict[img_name_with_ext] = bbs
         bbox_counter += bbs.shape[0]

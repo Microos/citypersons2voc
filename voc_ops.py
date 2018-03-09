@@ -45,8 +45,13 @@ tail = '</annotation>'
 
 
 class voc_formatter():
-    def __init__(self, img_src_dir: Path, des_dir: Path, name_bbs_dict_train, name_bbs_dict_val, lbl_map, copy_imgs = True,
+    def __init__(self, img_src_dir, des_dir,
+                 name_bbs_dict_train,
+                 name_bbs_dict_val,
+                 lbl_map,
+                 copy_imgs=True,
                  dir_exist_handling='PROCED'):
+
         self.img_src_dir = img_src_dir  # expected to have train/test/val dir and sub-dirs with city names
         self.des_dir = des_dir  # devkit dir
         self.dict_train = name_bbs_dict_train
@@ -125,7 +130,7 @@ class voc_formatter():
         with open(str(xml_file), 'w') as f:
             f.write(content)
 
-    def __run(self, src_img_dir: Path, name_bbs_dict: dict, name_set):
+    def __run(self, src_img_dir, name_bbs_dict, name_set):
         '''
         1. get img w, h
         2. copy img (if True)
