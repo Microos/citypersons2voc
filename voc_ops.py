@@ -100,7 +100,8 @@ class voc_formatter():
 
         self.anno_dir.mkdir(parents=True)
         self.set_dir.mkdir(parents=True)
-        if self.copy_imgs: self.img_dir.mkdir(parents=True)
+        if self.copy_imgs:
+            self.img_dir.mkdir(parents=True)
 
         # -. check src dir existence
         self.img_train_dir = self.img_src_dir / 'train'
@@ -172,7 +173,12 @@ class voc_formatter():
         self.__run(self.img_val_dir, self.dict_val, self.val_set)
 
         self.__write_set_file(self.train_set, 'train')
-        self.__write_set_file(self.val_set, 'val')
+        # self.__write_set_file(self.val_set, 'val')
+
+        # use a pre-calculated val list ordered by val image id
+        # this ease the issue at faster-rcnn result output stage
+        shutil.copyfile('./precalculated_ordered_val.txt',
+                        str(self.set_dir / 'val.txt'))
 
         print('Done:')
         print('  train: {} images'.format(len(self.train_set)))
