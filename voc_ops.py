@@ -148,6 +148,7 @@ class voc_formatter():
 {stat}
 
 @Filters:
+(a, b]
     - width_range  : {wrng}
     - height_range : {hrng}
     - vis_range    : {vrng}
@@ -219,14 +220,14 @@ class voc_formatter():
         wrng_inds = np.arange(num_gt)
         if wrng is not None:
             ws = vec[:, 3]
-            wrng_inds = np.where(np.logical_and(ws >= wrng[0], ws <= wrng[1]))[0]
+            wrng_inds = np.where(np.logical_and(ws > wrng[0], ws <= wrng[1]))[0]
             if wrng_inds.size == 0: return empty_inds, num_gt
 
         # 2. height range
         hrng_inds = np.arange(num_gt)
         if hrng is not None:
             hs = vec[:, 4]
-            hrng_inds = np.where(np.logical_and(hs >= hrng[0], hs <= hrng[1]))[0]
+            hrng_inds = np.where(np.logical_and(hs > hrng[0], hs <= hrng[1]))[0]
             if hrng_inds.size == 0: return empty_inds, num_gt
 
         # 3. vis range
@@ -235,7 +236,7 @@ class voc_formatter():
             full_area = vec[:, 3] * vec[:, 4]
             vis_area = vec[:, 8] * vec[:, 9]
             vs = vis_area / full_area
-            vrng_inds = np.where(np.logical_and(vs >= vrng[0], vs <= vrng[1]))[0]
+            vrng_inds = np.where(np.logical_and(vs > vrng[0], vs <= vrng[1]))[0]
             if vrng_inds.size == 0: return empty_inds, num_gt
 
         # merge all
