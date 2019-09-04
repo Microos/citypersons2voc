@@ -37,15 +37,26 @@ object_tmpl = \
             <truncated>0</truncated>
             <difficult>0</difficult>
             <bndbox>
-                <xmin>{:.3f}</xmin>
-                <ymin>{:.3f}</ymin>
-                <xmax>{:.3f}</xmax>
-                <ymax>{:.3f}</ymax>
+                <xmin>{:d}</xmin>
+                <ymin>{:d}</ymin>
+                <xmax>{:d}</xmax>
+                <ymax>{:d}</ymax>
             </bndbox>
         </object>
     '''  # .format(lbl, x1, y1, x2, y2)
 tail = '</annotation>'
 
+def validate_bbox(bbox, w, h):
+    [lbl, x1, y1, x2, y2] = bbox
+    x1 = int(max(0,x1))
+    y1 = int(max(0,y1))
+    x2 = int(min(x2,w-1))
+    y2 = int(min(y2,h-1))
+    assert x1 >=0 , x1
+    assert y1 >=0 , y1
+    assert x2 < w , x2
+    assert y2 < h , y2
+    return x1, y1, x2, y2
 
 class voc_formatter():
     def __init__(self,
@@ -252,6 +263,7 @@ class voc_formatter():
         content = header_tmpl.format(img_name, w, h)
         for bb in bbs:
             [lbl, x1, y1, x2, y2] = bb
+            x1, y1, x2, y2 = validate_bbox(bb, w, h)
             content += object_tmpl.format(self.lbl_map[lbl], x1, y1, x2, y2)
         content += tail
         xml_name = img_name.split('.')[0] + '.xml'
